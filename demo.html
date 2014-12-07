@@ -1,0 +1,66 @@
+<html>
+    <head>
+        <meta charset='utf-8'>
+    </head>
+    <body OnLoad="coolman_dance(); send();">
+        <script>
+        var a="\n";
+        tl = [
+        "   o"+a+"  /|\\"+a+" */ \\*"+a,"   o_"+a+"  \<| *"+a+"  *\>\\ "+a,"  _o/*"+a+" * |"+a+"  / \\         "+a,
+        " *\o_"+a+"  /  *"+a+" \<\\           "+a,"  _o/*"+a+" * |"+a+"  / \\         "+a," *\\c/*"+a+"   )"+a+"  / \>         "+a,
+        "     *"+a+"  \\__/c"+a+"   \> \\*       "+a,"   __/"+a+"    (o_*"+a+"     \\*       "+a,"      \\ /"+a+"       |"+a+"     */o\\*    "+a,
+        "       \\_"+a+"       ("+a+"     */o\\*    "+a,"        \<_"+a+"      __("+a+"     * o|*    "+a,"         /_"+a+"      __("+a+"     * o|*    "+a,
+        "         ___"+a+"      *\/ \>"+a+"       o|*    "+a,"        *"+a+"       o|_/"+a+"      */  \\   "+a,"        *"+a+"      _o|_"+a+"     *   \>\\   "+a,
+        "       _o/*"+a+"      * |"+a+"       / \\    "+a,"      *\\o/*"+a+"        |"+a+"       / \\    "+a,"      c/*"+a+"      \<\\"+a+"      */\\     "+a,
+        "      c__"+a+"      \<\ *"+a+"      */\\     "+a,"      c__"+a+"      /\ *"+a+"     * /\>     "+a,"      c/*"+a+"     /(__"+a+"    * /       "+a,
+        "    __o/*"+a+"    * (__"+a+"      \<       "+a,"      __o_"+a+"     * /  *"+a+"      \<\\      "+a,"     *_o_"+a+"       | *"+a+"      \< \\     "+a,
+        "     *_c_*"+a+"       |"+a+"       \>\\     "+a,"     *_c_*"+a+"       |__"+a+"       \>      "+a,"     *_c_*"+a+"     __|__"+a+"              "+a,
+        " "+a+"     *_c_*"+a+"     __)__    "+a," "+a+"     *\\c/*"+a+"     __)__    "+a
+        ];
+        var max = tl.length;
+        var x=0;
+
+        function coolman_dance() {
+            document.getElementById("cheerleader").value = " " + a + tl[x];
+            x++;
+            if (x == max)
+                x = 0;
+            setTimeout(function() {coolman_dance()}, 200);
+        }
+        </script>
+        <textarea style="display: block; width: 120px; height: 85px; cursor: inherit;resize: none" id='cheerleader' rows=5 cols=20 readonly></textarea>
+        <textarea style="display: block; width: 120px; height: 85px; cursor: inherit;resize: none" id='recivier' rows=5 cols=20 readonly></textarea>
+
+        <script src="http://cdn.pubnub.com/pubnub-3.7.1.min.js"></script>
+
+        <div id="text"></div>
+
+        <script>
+            pubnub = PUBNUB.init({
+                    publish_key : 'demo',
+                    subscribe_key : 'demo'
+                });
+
+            pubnub.subscribe({
+                channel : "hello_world",
+                message : function(message,env,channel){
+                    document.getElementById('text').innerHTML = "Message Received.<br>Channel: " + channel + '<br>' +
+                    "Message: " + JSON.stringify(message) + "<br>Raw Envelope: " + JSON.stringify(env) + '<br>';
+
+                     document.getElementById('recivier').value = message;
+                },
+                connect: function(){}
+            });
+
+            function send(){
+                var data = document.getElementById('cheerleader').value;
+                pubnub.publish({
+                    channel : "hello_world",
+                    message : data,
+                    callback: function(m){}
+                });
+                setTimeout(function() {send()}, 200);
+            };
+        </script>
+    </body>
+</html>
