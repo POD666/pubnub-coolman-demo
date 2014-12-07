@@ -21,14 +21,14 @@
         var x=0;
 
         function coolman_dance() {
-            document.getElementById("cheerleader").value = " " + a + tl[x];
+            document.getElementById("coolman").value = " " + a + tl[x];
             x++;
             if (x == max)
                 x = 0;
             setTimeout(function() {coolman_dance()}, 200);
         }
         </script>
-        <textarea style="display: block; width: 120px; height: 85px; cursor: inherit;resize: none" id='cheerleader' rows=5 cols=20 readonly></textarea>
+        <textarea style="display: block; width: 120px; height: 85px; cursor: inherit;resize: none" id='coolman' rows=5 cols=20 readonly></textarea>
         <textarea style="display: block; width: 120px; height: 85px; cursor: inherit;resize: none" id='recivier' rows=5 cols=20 readonly></textarea>
 
         <script src="http://cdn.pubnub.com/pubnub-3.7.1.min.js"></script>
@@ -53,7 +53,7 @@
             });
 
             function send(){
-                var data = document.getElementById('cheerleader').value;
+                var data = document.getElementById('coolman').value;
                 pubnub.publish({
                     channel : "hello_world",
                     message : data,
